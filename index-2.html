@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Random Quote Machine</title>
+
+    <!-- React 17 CDN -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <!-- FreeCodeCamp Test Suite -->
+    <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: #f4f4f4;
+        font-family: Arial, sans-serif;
+      }
+
+      #quote-box {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        text-align: center;
+      }
+
+      #text {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      #author {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+        color: #666;
+      }
+
+      #new-quote,
+      #tweet-quote {
+        padding: 0.5rem 1rem;
+        margin: 0.5rem;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        color: white;
+        background-color: #4caf50;
+        text-decoration: none;
+        transition: background 0.3s ease;
+      }
+
+      #new-quote:hover,
+      #tweet-quote:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { useState, useEffect } = React;
+
+      function RandomQuoteMachine() {
+        const [quote, setQuote] = useState("");
+        const [author, setAuthor] = useState("");
+
+        const quotes = [
+          { content: "Be yourself; everyone else is already taken.", author: "Oscar Wilde" },
+          { content: "So many books, so little time.", author: "Frank Zappa" },
+          { content: "A room without books is like a body without a soul.", author: "Cicero" },
+          { content: "You miss 100% of the shots you don't take.", author: "Wayne Gretzky" },
+          { content: "Whether you think you can or you think you can't, you're right.", author: "Henry Ford" }
+        ];
+
+        const fetchQuote = () => {
+          const random = quotes[Math.floor(Math.random() * quotes.length)];
+          setQuote(random.content);
+          setAuthor(random.author);
+        };
+
+        useEffect(() => {
+          fetchQuote();
+        }, []);
+
+        const tweetURL = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+          `"${quote}" - ${author}`
+        )}`;
+
+        return (
+          <div id="quote-box">
+            <p id="text">"{quote}"</p>
+            <p id="author">- {author}</p>
+            <button id="new-quote" onClick={fetchQuote}>
+              New Quote
+            </button>
+            <a
+              id="tweet-quote"
+              href={tweetURL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Tweet Quote
+            </a>
+          </div>
+        );
+      }
+
+      ReactDOM.render(<RandomQuoteMachine />, document.getElementById("root"));
+    </script>
+  </body>
+</html>
